@@ -46,10 +46,16 @@ class BaseDatasetReader(ABC):
     def read_raw_records(self) -> list[dict[str, Any]]:
         """Return raw dataset records."""
 
-    def read_examples(self, num_examples: int | None = None) -> list[DatasetExample]:
+    def read_examples(
+        self,
+        num_examples: int | None = None,
+        example_ids: list[str] | None = None,
+    ) -> list[DatasetExample]:
+        records = self.read_raw_records()
+        if example_ids is not None:
+            records = _filter_records_by_id(records, example_ids)
         # Apply the run limit before normalization so every reader subclass
         # gets consistent "only run N problems" behavior.
-        records = self.read_raw_records()
         if num_examples is not None:
             records = records[:num_examples]
         return [
@@ -252,3 +258,13 @@ def _ensure_records(items: list[Any]) -> list[dict[str, Any]]:
             raise ValueError(f"item {index} is not a JSON object")
         records.append(item)
     return records
+
+
+def _filter_records_by_id(records: list[dict[str, Any]], example_ids: list[str]) -> list[dict[str, Any]]:
+    wanted = {str(example_id) for example_id in example_ids}
+    matched = [record for record in records if str(record.get("id", "")) in wanted]
+    found = {str(record.get("id", "")) for record in matched}
+    missing = [example_id for example_id in example_ids if str(example_id) not in found]
+    if missing:
+        raise ValueError(f"example_ids not found in dataset: {','.join(missing)}")
+    return matched

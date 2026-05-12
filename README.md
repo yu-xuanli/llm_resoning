@@ -33,6 +33,7 @@ dataset_path: ""  # TODO: set dataset path
 question_field:  # Optional override. Leave empty to use dataset_name defaults.
 answer_field:  # Optional override. Leave empty to use dataset_name defaults.
 num_examples:  # Optional: how many problems to run this time.
+example_ids:  # Optional: comma-separated dataset ids, for example 60,72.
 prompt_template_path: templates/default_prompt.txt
 output_root: outputs
 branch_num: 2
@@ -48,6 +49,17 @@ Dataset-specific field defaults live on reader subclasses in `src/datasets.py`.
 For example, `Aime24DatasetReader` uses `problem` as the question field and
 `solution` as the answer field. Config values for `question_field` and
 `answer_field` override those class defaults when they are set.
+
+To run fixed dataset ids instead of the first `num_examples` problems, set
+`example_ids` as a comma-separated value:
+
+```yaml
+example_ids: 60,72
+num_examples:
+```
+
+If both `example_ids` and `num_examples` are set, the runner first filters by
+`example_ids`, then keeps the first `num_examples` matched examples.
 
 ## Prompt Templates
 
@@ -79,6 +91,12 @@ For a smoke test, set `num_examples` in YAML:
 
 ```bash
 python run_inference.py --config configs/default.yaml
+```
+
+To run selected problems, set `example_ids` in YAML, for example:
+
+```yaml
+example_ids: 60,72
 ```
 
 ## Output

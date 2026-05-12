@@ -92,8 +92,12 @@ def main() -> int:
         config.question_field,
         config.answer_field,
     )
-    examples = reader.read_examples(config.num_examples)
-    log(f"stage=dataset_load done examples={len(examples)} num_examples={config.num_examples}")
+    examples = reader.read_examples(config.num_examples, config.example_ids)
+    log(
+        "stage=dataset_load done "
+        f"examples={len(examples)} num_examples={config.num_examples} "
+        f"example_ids={','.join(config.example_ids) if config.example_ids else 'None'}"
+    )
 
     log("stage=template_load start")
     prompt_builder = PromptBuilder.from_file(template_path)

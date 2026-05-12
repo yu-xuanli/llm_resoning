@@ -29,6 +29,7 @@ class InferenceConfig:
     max_new_tokens: int
     seed: int
     num_examples: int | None = None
+    example_ids: list[str] | None = None
     tensor_parallel_size: int = 1
     gpu_memory_utilization: float = 0.9
     max_model_len: int | None = None
@@ -55,6 +56,7 @@ class InferenceConfig:
             max_new_tokens=int(data.get("max_new_tokens") or 2048),
             seed=int(data.get("seed") if data.get("seed") is not None else 42),
             num_examples=_optional_int(data.get("num_examples")),
+            example_ids=_optional_str_list(data.get("example_ids")),
             tensor_parallel_size=int(data.get("tensor_parallel_size") or 1),
             gpu_memory_utilization=float(data.get("gpu_memory_utilization") or 0.9),
             max_model_len=_optional_int(data.get("max_model_len")),
@@ -78,6 +80,8 @@ class InferenceConfig:
             raise ValueError("max_new_tokens must be >= 1")
         if self.num_examples is not None and self.num_examples < 1:
             raise ValueError("num_examples must be >= 1")
+        if self.example_ids is not None and not self.example_ids:
+            raise ValueError("example_ids must not be empty")
 
 
 def load_config(path: str | Path, project_root: Path | None = None) -> InferenceConfig:
@@ -110,3 +114,15 @@ def _optional_int(value: Any) -> int | None:
     if value in (None, ""):
         return None
     return int(value)
+
+
+def _optional_str_list(value: Any) -> list[str] | None:
+    if value in (None, ""):
+        return None
+    if isinstance(value, str):
+        items = [item.strip() for item in value.split(",")]
+    elif isinstance(value, (list, tuple)):
+        items = [str(item).strip() for item in value]
+    else:
+        items = [str(value).strip()]
+    return [item for item in items if item]

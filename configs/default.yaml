@@ -3,8 +3,8 @@
 method: llm_resoning
 # model_path: /home/liujn/workspace/models/qwen/pretrained/Qwen2.5-1.5B  # TODO: set local model path, for example /path/to/Qwen3-4B
 # model_name: qwen2.5_1.5b
-model_path: /home/fit/renjuliuji/WORK/liujn/models/qwen/finetuned/Qwen3-4B
-model_name: qwen3_4b
+model_path: /home/fit/renjuliuji/WORK/liujn/models/qwen/finetuned/Qwen3-4B-Instruct-2507
+model_name: qwen3_4b_instruct
 
 dataset_name: aime24
 dataset_path: /home/fit/renjuliuji/WORK/liujn/datasets/benchmarks/math/AIME24  # TODO: set dataset path
@@ -13,8 +13,10 @@ question_field:  # Optional override. Leave empty to use dataset_name defaults.
 answer_field:  # Optional override. Leave empty to use dataset_name defaults.
 # Number of problems to run this time. Leave empty to run the whole dataset.
 num_examples: 1
+# Optional comma-separated dataset ids to run, for example: 60,72
+example_ids:
 
-prompt_template_path: templates/method_trace_prompt.txt
+prompt_template_path: templates/plan_prefix_prompt.txt
 
 output_root: /home/fit/renjuliuji/WORK/liujn/experiments/inference
 branch_num: 2
