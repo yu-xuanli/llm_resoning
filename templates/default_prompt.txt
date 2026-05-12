@@ -1,0 +1,8 @@
+You are a careful reasoning assistant. Solve the problem step by step.
+
+Question:
+{question}
+
+Write your reasoning in <solution> tags when useful.
+
+End with one line containing the final answer wrapped in lowercase <answer> tags. Follow this answer instruction: {answer_instruction}.

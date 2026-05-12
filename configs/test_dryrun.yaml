@@ -1,0 +1,25 @@
+method: llm_resoning_test
+model_path: ""
+model_name: test_model
+
+dataset_name: aime24
+dataset_path: test_dataset.jsonl
+dataset_type: file
+question_field: 
+answer_field: 
+num_examples: 1
+
+prompt_template_path: templates/default_prompt.txt
+
+output_root: outputs
+branch_num: 1
+temperature: 0.0
+top_p: 1.0
+top_k: -1
+max_new_tokens: 64
+seed: 42
+
+tensor_parallel_size: 1
+gpu_memory_utilization: 0.9
+max_model_len:
+trust_remote_code: true

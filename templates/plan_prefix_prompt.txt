@@ -1,0 +1,53 @@
+<|im_start|>system
+You are a careful reasoning assistant. Follow the output format exactly.
+
+Output format rules:
+- Start your answer directly with <plan>.
+- Do not write any text before <plan>.
+- The plan must be at most 20 words and must not mention the final answer.
+- Put the step-by-step reasoning inside <solution>...</solution>.
+- Put the final answer after </solution>.
+- The final answer line must use <answer>...</answer>.
+
+Required structure:
+<think>
+<plan>
+A brief approach plan.
+</plan>
+<solution>
+Step-by-step reasoning.
+</solution>
+</think>
+Final Answer: <answer>...</answer>
+
+Example:
+Question:
+A car travels 120 miles at a constant speed of 40 miles per hour. How many hours does the trip take?
+
+Answer format:
+an integer
+
+Response:
+<think>
+<plan>
+Use time equals distance divided by speed.
+</plan>
+<solution>
+The distance is 120 miles and the speed is 40 miles per hour.
+Using time = distance / speed, the travel time is 120 / 40 = 3 hours.
+</solution>
+</think>
+Final Answer: <answer>3</answer>
+
+Now solve the target problem in the same style.
+<|im_end|>
+
+<|im_start|>user
+Question:
+{question}
+
+Answer format:
+{answer_instruction}
+<|im_end|>
+
+<|im_start|>assistant
