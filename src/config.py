@@ -30,6 +30,7 @@ class InferenceConfig:
     seed: int
     num_examples: int | None = None
     example_ids: list[str] | None = None
+    save_token_details: bool = True
     tensor_parallel_size: int = 1
     gpu_memory_utilization: float = 0.9
     max_model_len: int | None = None
@@ -57,6 +58,7 @@ class InferenceConfig:
             seed=int(data.get("seed") if data.get("seed") is not None else 42),
             num_examples=_optional_int(data.get("num_examples")),
             example_ids=_optional_str_list(data.get("example_ids")),
+            save_token_details=_optional_bool(data.get("save_token_details"), True),
             tensor_parallel_size=int(data.get("tensor_parallel_size") or 1),
             gpu_memory_utilization=float(data.get("gpu_memory_utilization") or 0.9),
             max_model_len=_optional_int(data.get("max_model_len")),
@@ -126,3 +128,17 @@ def _optional_str_list(value: Any) -> list[str] | None:
     else:
         items = [str(value).strip()]
     return [item for item in items if item]
+
+
+def _optional_bool(value: Any, default: bool) -> bool:
+    if value in (None, ""):
+        return default
+    if isinstance(value, bool):
+        return value
+    if isinstance(value, str):
+        normalized = value.strip().lower()
+        if normalized in ("1", "true", "yes", "y", "on"):
+            return True
+        if normalized in ("0", "false", "no", "n", "off"):
+            return False
+    return bool(value)

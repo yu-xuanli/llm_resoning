@@ -41,6 +41,7 @@ temperature: 0.7
 top_p: 0.9
 top_k: -1
 max_new_tokens: 2048
+save_token_details: true  # Set false to skip per-token JSON details.
 ```
 
 Supported dataset files: `.json`, `.jsonl`, `.csv`, `.parquet`.
@@ -60,6 +61,10 @@ num_examples:
 
 If both `example_ids` and `num_examples` are set, the runner first filters by
 `example_ids`, then keeps the first `num_examples` matched examples.
+
+Set `save_token_details: false` when you only need the prompt, reasoning trace,
+answer, correctness, and token counts. This skips per-token probability entries
+and top-logprob details, which keeps long-trajectory JSON files much smaller.
 
 ## Prompt Templates
 

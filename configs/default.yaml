@@ -25,6 +25,8 @@ top_p: 0.9
 top_k: -1
 max_new_tokens: 32768
 seed: 42
+# Set false to skip per-token probabilities and top logprobs in branch JSON.
+save_token_details: true
 
 tensor_parallel_size: 1
 gpu_memory_utilization: 0.9

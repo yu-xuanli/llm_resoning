@@ -135,7 +135,9 @@ def main() -> int:
             )
             reasoning = response_prefix + generation.text.lstrip()
             extracted_answer = extract_final_answer(reasoning)
-            method_spans = extract_method_spans(reasoning, generation.tokens)
+            saved_tokens = generation.tokens if config.save_token_details else []
+            saved_top_logprobs = generation.top_logprobs if config.save_token_details else []
+            method_spans = extract_method_spans(reasoning, saved_tokens)
             stats = BranchStatistics(
                 example_id=example.example_id,
                 question=example.question,
@@ -156,14 +158,15 @@ def main() -> int:
                 branch_index=generation.branch_index,
                 seed=config.seed,
                 raw_finish_reason=generation.finish_reason,
-                tokens=generation.tokens,
-                top_logprobs=generation.top_logprobs,
+                tokens=saved_tokens,
+                top_logprobs=saved_top_logprobs,
                 extra={
                     "dataset_name": config.dataset_name,
                     "dataset_path": str(dataset_path),
                     "answer": example.answer,
                     "raw_record": example.raw_record,
                     "method_spans": method_spans,
+                    "save_token_details": config.save_token_details,
                 },
             )
             log(

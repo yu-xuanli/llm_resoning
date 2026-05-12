@@ -47,9 +47,10 @@ class VLLMGenerator:
             "temperature": self.config.temperature,
             "top_p": self.config.top_p,
             "max_tokens": self.config.max_new_tokens,
-            "logprobs": 5,
             "seed": self.config.seed,
         }
+        if self.config.save_token_details:
+            sampling_kwargs["logprobs"] = 5
         if self.config.top_k > 0:
             sampling_kwargs["top_k"] = self.config.top_k
 
